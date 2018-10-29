@@ -1,0 +1,2 @@
+nfrplb4001          2018-03-01 00:03:33,563  INFO MemUsageMonitor      Server.RunLevel Memory usage: 2640.081 MB used (both active and stale objects), 9589.417 MB free, 12229.500 MB total, 12229.500 MB max. --  Please read 'Memory usage logging' in the System Administration Guide for information on how to interpret these numbers.
+nfrplb4001          2018-03-01 00:06:14,812  INFO Timer-1              Server.Cluster Cluster channel transport statistics:
