@@ -11,42 +11,45 @@ log_file_path = r"C:\Users\smarshall\Desktop\python\logs\pclog.log"
 ## Regexs ##
 date = '([0-9]{4}-[0-9]{2}-[0-9]{2}(?=\s\d{1,2}))'
 time = '([\d]{1,2}:[\d]{1,2}:[\d]{1,2}.[\d]{1,3})'
-datetime = '([0-9]{4}-[0-9]{2}-[0-9]{2})\s([\d]{1,2}:[\d]{1,2}:[\d]{1,2},\d{1,3})'
-timefraction = r'(,\d{1,3})'
+datetime = r'([0-9]{4}-[0-9]{2}-[0-9]{2})\s([\d]{1,2}:[\d]{1,2}:[\d]{1,2})'
+# timefraction = r'((?:,)(\d{1,3})\s\s)'
+timefraction = r',(\d[0-9].)'
 workqueue = r'(\bWorkqueue\sDWM\W\sSending\smessage\W\sWorkflow\b)'
 
 
-regexs = [datetime,timefraction,workqueue]
+regexs = [workqueue]
 
 
 
 # List for columns.......
 match_list=[[]]
-
+match_dict={}
 headers = "datetime,txn"
+c = ','
 
 def readwrite(i):
     with open(log_file_path, "r") as file:
-        with open(r'C:\Users\smarshall\Desktop\python\splitlog.csv', 'w') as outfile:
+        with open(r'C:\Users\smarshall\Desktop\python\splitlog2.csv', 'w') as outfile:
             outfile.write(headers + "\n")
             ###  For line in the log file match up the regex and chuck it in a list... then write a row
             for line in file:
+                match_dict["datetime"]= re.findall(datetime,line)
+                match_dict["timefraction"]= re.findall(timefraction,line)
+
                 for r in regexs:
-                    for match in re.finditer(r, line, re.S):
-                        match_text = match.group()
+                    match_dict["txn"]=re.findall(r,line)
 
-                        if match is not None:
-                            match_list[i].append(match_text)
 
-                row =str(match_list[i]).replace("'","")
-                commaCount = row.count(',')
+                if match_dict["txn"]:
+                    print(match_dict.values())
 
 
 
-                if commaCount > len(regexs)-1:
-                    outfile.write(row.strip("[]") +"\n")
-                i += 1
-                match_list.append([])
+                #
+                # row = match_dict.get("datetime")+'.'+match_dict.get("timefraction")+ c + match_dict.get("txn") + "\n"
+                # outfile.write(row)
+                # i += 1
+
 
 
 def writerows():
